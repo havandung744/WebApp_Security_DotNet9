@@ -6,6 +6,14 @@ builder.Services.AddAuthentication().AddCookie("MyCookieAuth", options =>
 {
     options.Cookie.Name = "MyCookieAuth";
 });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Admin"));
+    options.AddPolicy("HRManagerOnly", policy =>
+        policy.RequireAssertion(context =>
+                  context.User.HasClaim("Department", "HR") ||
+                  context.User.HasClaim("Manager", "true")));
+});
 
 var app = builder.Build();
 
