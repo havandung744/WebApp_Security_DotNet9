@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace WebApp.Pages.Account
 {
@@ -9,8 +11,22 @@ namespace WebApp.Pages.Account
         [BindProperty]
         public Credential Credential { get; set; } = new Credential();
 
-        public void OnGet()
+        public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid) return Page();
+
+            if (Credential.UserName == "admin" && Credential.Password == "password")
+            {
+                var claims = new List<Claim> {
+                    new Claim(ClaimTypes.Name, "admin"),
+                    new Claim(ClaimTypes.Email, "hdung72267@gmail.com")
+                };
+                var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+                ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync("MyCookieAuth", claimsPrincipal);
+                return RedirectToPage("/Index");
+            }
+            return Page();
         }
     }
 
