@@ -15,7 +15,10 @@ builder.Services.AddAuthorization(options =>
                   context.User.HasClaim("Department", "HR") ||
                   context.User.HasClaim("Manager", "true")));
 });
-
+builder.Services.AddHttpClient("OurWebAPI", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7005/");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
