@@ -5,6 +5,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddAuthentication().AddCookie("MyCookieAuth", options =>
 {
     options.Cookie.Name = "MyCookieAuth";
+    options.ExpireTimeSpan = TimeSpan.FromSeconds(120);
 });
 builder.Services.AddAuthorization(options =>
 {
