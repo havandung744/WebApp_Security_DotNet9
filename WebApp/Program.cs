@@ -5,7 +5,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddAuthentication().AddCookie("MyCookieAuth", options =>
 {
     options.Cookie.Name = "MyCookieAuth";
-    options.ExpireTimeSpan = TimeSpan.FromSeconds(120);
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
 });
 builder.Services.AddAuthorization(options =>
 {
@@ -19,6 +19,13 @@ builder.Services.AddHttpClient("OurWebAPI", client =>
 {
     client.BaseAddress = new Uri("https://localhost:7005/");
 });
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.IdleTimeout = TimeSpan.FromSeconds(20);
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,6 +43,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.UseSession();
+
 app.MapRazorPages()
    .WithStaticAssets();
 

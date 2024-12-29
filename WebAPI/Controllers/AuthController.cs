@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
                     new Claim("Admin", "true"),
                     new Claim("Manager", "true"),
                 };
-                var expiresAt = DateTime.Now.AddMinutes(10);
+                var expiresAt = DateTime.Now.AddSeconds(10);
                 return Ok(new
                 {
                     access_token = CreateToken(claims, expiresAt),
