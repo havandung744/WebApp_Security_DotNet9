@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using WebApp.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,6 +27,10 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.IdleTimeout = TimeSpan.FromSeconds(20);
     options.Cookie.IsEssential = true;
+});
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
 var app = builder.Build();
