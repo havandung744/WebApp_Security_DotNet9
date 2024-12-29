@@ -1,6 +1,15 @@
-@WebAPI_HostAddress = https://localhost:44305
+@WebAPI_HostAddress = https://localhost:7005
 
-GET {{WebAPI_HostAddress}}/weatherforecast/
+GET {{WebAPI_HostAddress}}/WeatherForecast/GetWeatherForecast
 Accept: application/json
 
 ###
+
+POST {{WebAPI_HostAddress}}/Auth/Authenticate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "UserName": "admin",
+  "Password": "password"
+}
